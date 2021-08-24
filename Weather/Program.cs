@@ -21,7 +21,7 @@ namespace Weather
 
             string city = Console.ReadLine();
 
-            double response = service.CurrentWeather(url, appid, city);
+            string response = service.CurrentWeather(url, appid, city);
 
             Console.WriteLine(response);
         }

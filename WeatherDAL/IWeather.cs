@@ -6,6 +6,6 @@ namespace WeatherDAL
 {
     public interface IWeather
     {
-        double CurrentWeather(string url, string appid, string city);
+        string CurrentWeather(string url, string appid, string city);
     }
 }
