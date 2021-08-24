@@ -24,6 +24,8 @@ namespace Weather
             string response = service.CurrentWeather(url, appid, city);
 
             Console.WriteLine(response);
+
+            Console.ReadLine();
         }
     }
 }

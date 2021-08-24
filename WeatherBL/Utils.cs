@@ -27,11 +27,18 @@ namespace WeatherBL
 
         public static WeatherResponse Converter(HttpResponseMessage message)
         {
-            var responseString = message.Content.ReadAsStringAsync().Result;
+            try
+            {
+                var responseString = message.Content.ReadAsStringAsync().Result;
 
-            WeatherResponse weatherResponse = JsonConvert.DeserializeObject<WeatherResponse>(responseString);
+                WeatherResponse weatherResponse = JsonConvert.DeserializeObject<WeatherResponse>(responseString);
 
-            return weatherResponse;
+                return weatherResponse;
+            }
+            catch(Exception ex)
+            {
+                return new WeatherResponse { };
+            }            
         }
     }
 }

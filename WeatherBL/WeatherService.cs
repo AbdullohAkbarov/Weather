@@ -13,6 +13,11 @@ namespace WeatherBL
         HttpClient client;
         string result;
 
+        public WeatherService()
+        {
+            client = new HttpClient();
+        }
+
         public string CurrentWeather(string weatherUrl, string appid, string city)
         {
             NameValueCollection collection = new NameValueCollection();
@@ -22,7 +27,7 @@ namespace WeatherBL
 
             try
             {
-                var responseWeather = client.PostAsync(url, null).Result;
+                var responseWeather = client.GetAsync(url).Result;
 
                 var weatherResponse = Utils.Converter(responseWeather);
 
