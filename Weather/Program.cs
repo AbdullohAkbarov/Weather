@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WeatherBL;
 using System.Configuration;
+using System.Net.Http;
 
 namespace Weather
 {
@@ -12,16 +9,17 @@ namespace Weather
     {
         static string url = ConfigurationManager.AppSettings["weatherUrl"];
         static string appid = ConfigurationManager.AppSettings["appid"];
+        //HttpClient client;
 
         public static void Main(string[] args)
         {
-            WeatherService service = new WeatherService();
+            WeatherService service = new WeatherService(url, appid);
 
             Console.Write("Write to city which you want to know the wheather ");
 
             string city = Console.ReadLine();
 
-            string response = service.CurrentWeather(url, appid, city);
+            string response = service.GetCurrentWeather(city);
 
             Console.WriteLine(response);
 

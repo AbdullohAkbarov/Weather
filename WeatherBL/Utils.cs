@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Web;
 using WeatherBL.Models.WeatherBL;
+using WeatherDAL.Models;
 
 namespace WeatherBL
 {
@@ -23,22 +24,6 @@ namespace WeatherBL
                 ).ToArray();
 
             return string.Join("?", url, string.Join("&", array));
-        }
-
-        public static WeatherResponse Converter(HttpResponseMessage message)
-        {
-            try
-            {
-                var responseString = message.Content.ReadAsStringAsync().Result;
-
-                WeatherResponse weatherResponse = JsonConvert.DeserializeObject<WeatherResponse>(responseString);
-
-                return weatherResponse;
-            }
-            catch(Exception ex)
-            {
-                return new WeatherResponse { };
-            }            
         }
     }
 }

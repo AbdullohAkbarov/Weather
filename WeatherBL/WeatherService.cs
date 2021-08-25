@@ -4,41 +4,44 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Net.Http;
 using System.Text;
+using WeatherBL.Models;
 using WeatherDAL;
 
 namespace WeatherBL
 {
-    public class WeatherService : IWeather
+    public class WeatherService
     {
-        HttpClient client;
-        string result;
+        private HttpClient client;
+        private string url;
+        private string appid;
+        Weather weather;
 
-        public WeatherService()
+        public WeatherService(string url, string appid)
         {
-            client = new HttpClient();
+            this.url = url;
+            this.appid = appid;
         }
 
-        public string CurrentWeather(string weatherUrl, string appid, string city)
+        public Weather GetCurrentWeather(string city)
         {
+            WeatherProvider provider = new WeatherProvider(client);
+
             NameValueCollection collection = new NameValueCollection();
             collection.Add("q", city);
             collection.Add("appid", appid);
-            string url = Utils.UrlStringBuilder(weatherUrl, collection);
+            string weatherUrl = Utils.UrlStringBuilder(url, collection);
 
-            try
+            var response = provider.CallOpenWeather(weatherUrl);
+            if(response != null)
             {
-                var responseWeather = client.GetAsync(url).Result;
-
-                var weatherResponse = Utils.Converter(responseWeather);
-
-                result = weatherResponse.GetTemp().ToString();
+                weather = new Weather(city, response.GetTemp(), true);
             }
-            catch(Exception ex)
+            else
             {
-                result = ex.Message;
+                weather = new Weather(false, "Didn't find the city you wrote");
             }
 
-            return result;
+            return weather;
         }
     }
 }
