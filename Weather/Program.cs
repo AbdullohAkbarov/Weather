@@ -9,19 +9,24 @@ namespace Weather
     {
         static string url = ConfigurationManager.AppSettings["weatherUrl"];
         static string appid = ConfigurationManager.AppSettings["appid"];
-        //HttpClient client;
 
         public static void Main(string[] args)
         {
             WeatherService service = new WeatherService(url, appid);
 
-            Console.Write("Write to city which you want to know the wheather ");
+            Console.Write("Write to city which you want to know the wheather = ");
 
-            string city = Console.ReadLine();
+            var city = Console.ReadLine();
 
-            string response = service.GetCurrentWeather(city);
-
-            Console.WriteLine(response);
+            var response = service.GetCurrentWeather(city).Result;
+            if(response.IsSuccess is true)
+            {
+                Console.WriteLine($"The weather in {response.City} City right now is {response.Temperature}");
+            }
+            else
+            {
+                Console.WriteLine(response.Error);
+            }            
 
             Console.ReadLine();
         }

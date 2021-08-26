@@ -1,15 +1,11 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Web;
-using WeatherBL.Models.WeatherBL;
-using WeatherDAL.Models;
 
-namespace WeatherBL
+namespace WeatherDAL
 {
     public static class Utils
     {

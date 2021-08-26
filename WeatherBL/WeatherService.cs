@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using WeatherBL.Models;
 using WeatherDAL;
 
 namespace WeatherBL
 {
-    public class WeatherService
+    public class WeatherService : IWeatherService
     {
-        private HttpClient client;
-        private string url;
-        private string appid;
-        Weather weather;
+        private readonly string url;
+        private readonly string appid;
+        private WeatherModel weather;
 
         public WeatherService(string url, string appid)
         {
@@ -22,24 +22,26 @@ namespace WeatherBL
             this.appid = appid;
         }
 
-        public Weather GetCurrentWeather(string city)
+        public async Task<WeatherModel> GetCurrentWeather(string city)
         {
-            WeatherProvider provider = new WeatherProvider(client);
+            WeatherProvider provider = new WeatherProvider(appid);
 
-            NameValueCollection collection = new NameValueCollection();
-            collection.Add("q", city);
-            collection.Add("appid", appid);
-            string weatherUrl = Utils.UrlStringBuilder(url, collection);
-
-            var response = provider.CallOpenWeather(weatherUrl);
-            if(response != null)
+            try 
             {
-                weather = new Weather(city, response.GetTemp(), true);
+                var response = await provider.GetWeatherAsync(url, city);
+                if (response != null)
+                {
+                    weather = new WeatherModel(city, response.Main.Temp.GetCelsius(), true);
+                }
+                else
+                {
+                    weather = new WeatherModel("Didn't find the city you wrote");
+                }
             }
-            else
+            catch(Exception ex)
             {
-                weather = new Weather(false, "Didn't find the city you wrote");
-            }
+                weather = new WeatherModel($"Didn't find the city you wrote. Error = {ex.Message}");
+            }            
 
             return weather;
         }

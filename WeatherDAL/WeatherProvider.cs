@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using WeatherDAL.Models;
 
 namespace WeatherDAL
@@ -10,31 +12,27 @@ namespace WeatherDAL
     public class WeatherProvider : IWeatherProvider
     {
         private HttpClient client;
+        private string appid;
+        private WeatherResponse weatherResponse;
 
-        public WeatherProvider()
+        public WeatherProvider(string appid)
         {
+            this.appid = appid;
             client = new HttpClient();
         }
-        public WeatherProvider(HttpClient client)
-        {
-            this.client = client;
-        }
 
-        public WeatherResponse CallOpenWeather(string url)
+        public async Task<WeatherResponse> GetWeatherAsync(string url, string city)
         {
-            WeatherResponse weatherResponse;
-            try
-            {
-                var response = client.GetAsync(url).Result;
-                var responseString = response.Content.ReadAsStringAsync().Result;
-                weatherResponse = JsonConvert.DeserializeObject<WeatherResponse>(responseString);
+            var collection = new NameValueCollection();
+            collection.Add("q", city);
+            collection.Add("appid", appid);
+            string weatherUrl = Utils.UrlStringBuilder(url, collection);
 
-                return weatherResponse;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            var response = await client.GetAsync(weatherUrl);
+            var responseString = await response.Content.ReadAsStringAsync();
+            weatherResponse = JsonConvert.DeserializeObject<WeatherResponse>(responseString);
+
+            return weatherResponse;
         }
     }
 }

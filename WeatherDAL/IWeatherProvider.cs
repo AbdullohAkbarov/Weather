@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using WeatherDAL.Models;
 
 namespace WeatherDAL
 {
     public interface IWeatherProvider
     {
-        WeatherResponse CallOpenWeather(string url);
+        Task<WeatherResponse> GetWeatherAsync(string url, string city);
     }
 }

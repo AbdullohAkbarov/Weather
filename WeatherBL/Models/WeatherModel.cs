@@ -4,15 +4,14 @@ using System.Text;
 
 namespace WeatherBL.Models
 {
-    public class Weather
+    public class WeatherModel
     {
-        public Weather(bool isSuccess, string error)
+        public WeatherModel(string error)
         {
-            IsSuccess = isSuccess;
             Error = error;
         }
 
-        public Weather(string city, double temperature, bool isSuccess)
+        public WeatherModel(string city, double temperature, bool isSuccess)
         {
             City = city;
             Temperature = temperature;
