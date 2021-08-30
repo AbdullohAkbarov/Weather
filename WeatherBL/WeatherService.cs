@@ -12,35 +12,31 @@ namespace WeatherBL
 {
     public class WeatherService : IWeatherService
     {
-        private readonly string url;
-        private readonly string appid;
+        private IWeatherProvider provider;
         private WeatherModel weather;
 
-        public WeatherService(string url, string appid)
+        public WeatherService(IWeatherProvider provider)
         {
-            this.url = url;
-            this.appid = appid;
+            this.provider = provider;
         }
 
-        public async Task<WeatherModel> GetCurrentWeather(string city)
+        public async Task<WeatherModel> GetCurrentWeatherAsync(string city)
         {
-            WeatherProvider provider = new WeatherProvider(appid);
-
             try 
             {
-                var response = await provider.GetWeatherAsync(url, city);
+                var response = await provider.GetWeatherAsync(city);
                 if (response != null)
                 {
-                    weather = new WeatherModel(city, response.Main.Temp.GetCelsius(), true);
+                    weather = new WeatherModel { City = city, Temperature = DegreeConverter.GetCelsius(response.Main.Temp), IsSuccess = true };
                 }
                 else
                 {
-                    weather = new WeatherModel("Didn't find the city you wrote");
+                    weather = new WeatherModel { Error = "Didn't find the city you wrote" };
                 }
             }
             catch(Exception ex)
             {
-                weather = new WeatherModel($"Didn't find the city you wrote. Error = {ex.Message}");
+                weather = new WeatherModel { Error = $"Didn't find the city you wrote. Error = {ex.Message}" };
             }            
 
             return weather;

@@ -4,9 +4,9 @@ using System.Text;
 
 namespace WeatherBL
 {
-    public static class Extensions
+    public static class DegreeConverter
     {
-        public static double GetCelsius(this Double temperature)
+        public static double GetCelsius(double temperature)
         {
             return temperature - 273.15;
         }

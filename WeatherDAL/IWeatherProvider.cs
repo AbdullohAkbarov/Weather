@@ -9,6 +9,11 @@ namespace WeatherDAL
 {
     public interface IWeatherProvider
     {
-        Task<WeatherResponse> GetWeatherAsync(string url, string city);
+        HttpClient Client { get; set; }
+        WeatherResponse WeatherResponse { get; set; }
+        string Appid { get; set; }
+        string Url { get; set; }        
+
+        Task<WeatherResponse> GetWeatherAsync(string city);
     }
 }

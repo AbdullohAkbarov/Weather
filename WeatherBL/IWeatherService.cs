@@ -8,6 +8,6 @@ namespace WeatherBL
 {
     public interface IWeatherService
     {
-        Task<WeatherModel> GetCurrentWeather(string city);
+        Task<WeatherModel> GetCurrentWeatherAsync(string city);
     }
 }

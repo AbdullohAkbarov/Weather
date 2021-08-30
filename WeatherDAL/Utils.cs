@@ -11,7 +11,7 @@ namespace WeatherDAL
     {
         public static string UrlStringBuilder(string url, NameValueCollection collection)
         {
-            string[] array = (
+            var array = (
                 from key in collection.AllKeys
                 from value in collection.GetValues(key)
                 select string.Format("{0}={1}",

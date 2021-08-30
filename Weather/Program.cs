@@ -2,6 +2,7 @@
 using WeatherBL;
 using System.Configuration;
 using System.Net.Http;
+using WeatherDAL;
 
 namespace Weather
 {
@@ -12,13 +13,13 @@ namespace Weather
 
         public static void Main(string[] args)
         {
-            WeatherService service = new WeatherService(url, appid);
+            WeatherService service = new WeatherService(new WeatherProvider(new HttpClient(), url, appid));
 
             Console.Write("Write to city which you want to know the wheather = ");
 
             var city = Console.ReadLine();
 
-            var response = service.GetCurrentWeather(city).Result;
+            var response = service.GetCurrentWeatherAsync(city).Result;
             if(response.IsSuccess is true)
             {
                 Console.WriteLine($"The weather in {response.City} City right now is {response.Temperature}");
