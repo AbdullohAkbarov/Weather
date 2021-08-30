@@ -36,7 +36,7 @@ namespace WeatherBL
             }
             catch(Exception ex)
             {
-                weather = new WeatherModel { Error = $"Error occured the city can't find. Error = {ex.Message}" };
+                weather = new WeatherModel { Error = $"Unspecified Error Occurred. {ex.Message}" };
             }            
 
             return weather;
