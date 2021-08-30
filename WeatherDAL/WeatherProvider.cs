@@ -12,13 +12,13 @@ namespace WeatherDAL
     public class WeatherProvider : IWeatherProvider
     {
         private readonly HttpClient client;
-        public string Appid { get; set; }
-        public string Url { get; set; }
+        private string appid;
+        private string url;
 
         public WeatherProvider(HttpClient client, string url, string appid)
         {
-            Appid = appid;
-            Url = url;
+            this.appid = appid;
+            this.url = url;
             this.client = client;
         }
 
@@ -26,8 +26,8 @@ namespace WeatherDAL
         {
             var collection = new NameValueCollection();
             collection.Add("q", city);
-            collection.Add("appid", Appid);
-            var weatherUrl = Utils.UrlStringBuilder(Url, collection);
+            collection.Add("appid", appid);
+            var weatherUrl = Utils.UrlStringBuilder(url, collection);
 
             var response = await client.GetAsync(weatherUrl);
             var responseString = await response.Content.ReadAsStringAsync();
