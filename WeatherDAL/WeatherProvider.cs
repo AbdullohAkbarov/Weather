@@ -11,7 +11,7 @@ namespace WeatherDAL
 {
     public class WeatherProvider : IWeatherProvider
     {
-        public HttpClient Client { get; set; }
+        private readonly HttpClient client;
         public string Appid { get; set; }
         public string Url { get; set; }
 
@@ -19,7 +19,7 @@ namespace WeatherDAL
         {
             Appid = appid;
             Url = url;
-            Client = client;
+            this.client = client;
         }
 
         public async Task<WeatherResponse> GetWeatherAsync(string city)
@@ -27,9 +27,9 @@ namespace WeatherDAL
             var collection = new NameValueCollection();
             collection.Add("q", city);
             collection.Add("appid", Appid);
-            string weatherUrl = Utils.UrlStringBuilder(Url, collection);
+            var weatherUrl = Utils.UrlStringBuilder(Url, collection);
 
-            var response = await Client.GetAsync(weatherUrl);
+            var response = await client.GetAsync(weatherUrl);
             var responseString = await response.Content.ReadAsStringAsync();
             var weatherResponse = JsonConvert.DeserializeObject<WeatherResponse>(responseString);
 

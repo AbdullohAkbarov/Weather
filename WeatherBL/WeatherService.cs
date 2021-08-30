@@ -31,12 +31,12 @@ namespace WeatherBL
                 }
                 else
                 {
-                    weather = new WeatherModel { Error = "Didn't find the city you wrote" };
+                    weather = new WeatherModel { Error = "Error occured the city can't find." };
                 }
             }
             catch(Exception ex)
             {
-                weather = new WeatherModel { Error = $"Didn't find the city you wrote. Error = {ex.Message}" };
+                weather = new WeatherModel { Error = $"Error occured the city can't find. Error = {ex.Message}" };
             }            
 
             return weather;
