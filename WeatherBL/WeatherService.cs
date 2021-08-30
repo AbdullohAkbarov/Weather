@@ -13,7 +13,6 @@ namespace WeatherBL
     public class WeatherService : IWeatherService
     {
         private IWeatherProvider provider;
-        private WeatherModel weather;
 
         public WeatherService(IWeatherProvider provider)
         {
@@ -22,6 +21,7 @@ namespace WeatherBL
 
         public async Task<WeatherModel> GetCurrentWeatherAsync(string city)
         {
+            WeatherModel weather;
             try 
             {
                 var response = await provider.GetWeatherAsync(city);

@@ -13,10 +13,10 @@ namespace Weather.Tests.WeatherBL
         public void GetCurrentWeatherTest()
         {
             //arrange            
-            WeatherService service = new WeatherService(url, appid);
+            //WeatherService service = new WeatherService(url, appid);
 
             //act
-            WeatherModel result = service.GetCurrentWeather(city).Result;
+            //WeatherModel result = service.GetCurrentWeather(city).Result;
 
             //assert
             //Assert.

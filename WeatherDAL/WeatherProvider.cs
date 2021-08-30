@@ -13,7 +13,6 @@ namespace WeatherDAL
     {
         public HttpClient Client { get; set; }
         public string Appid { get; set; }
-        public WeatherResponse WeatherResponse { get; set; }
         public string Url { get; set; }
 
         public WeatherProvider(HttpClient client, string url, string appid)
@@ -32,9 +31,9 @@ namespace WeatherDAL
 
             var response = await Client.GetAsync(weatherUrl);
             var responseString = await response.Content.ReadAsStringAsync();
-            WeatherResponse = JsonConvert.DeserializeObject<WeatherResponse>(responseString);
+            var weatherResponse = JsonConvert.DeserializeObject<WeatherResponse>(responseString);
 
-            return WeatherResponse;
+            return weatherResponse;
         }
     }
 }

@@ -10,7 +10,6 @@ namespace WeatherDAL
     public interface IWeatherProvider
     {
         HttpClient Client { get; set; }
-        WeatherResponse WeatherResponse { get; set; }
         string Appid { get; set; }
         string Url { get; set; }        
 
