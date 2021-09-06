@@ -12,7 +12,7 @@ namespace WeatherBL
 {
     public class WeatherService : IWeatherService
     {
-        private IWeatherProvider provider;
+        private readonly IWeatherProvider provider;
 
         public WeatherService(IWeatherProvider provider)
         {
@@ -22,7 +22,7 @@ namespace WeatherBL
         public async Task<WeatherModel> GetCurrentWeatherAsync(string city)
         {
             WeatherModel weather;
-            try 
+            try
             {
                 var response = await provider.GetWeatherAsync(city);
                 if (response != null)
@@ -31,7 +31,7 @@ namespace WeatherBL
                 }
                 else
                 {
-                    weather = new WeatherModel { Error = "Error occured the city can't find." };
+                    weather = new WeatherModel { Error = "Error occured the city can't be found." };
                 }
             }
             catch(Exception ex)

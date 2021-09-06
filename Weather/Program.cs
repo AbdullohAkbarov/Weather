@@ -8,7 +8,7 @@ namespace Weather
 {
     public class Program
     {
-        static string url = ConfigurationManager.AppSettings["weatherUrl"];
+        static string url = ConfigurationManager.AppSettings["url"];
         static string appid = ConfigurationManager.AppSettings["appid"];
 
         public static async void Main(string[] args)
