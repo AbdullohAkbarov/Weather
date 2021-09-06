@@ -17,13 +17,12 @@ namespace WeatherTests.UnitTests
     {
         private WeatherService service;
         private string city = "Tashkent";
-        private HttpClient client;
 
         [SetUp]
         public void Setup()
         {
             var mock = new Mock<IWeatherProvider>();
-            mock.Setup(new WeatherResponse() { new Main() { Temp = 300.00 } });
+            mock.Setup(m => m.GetWeatherAsync(city)).ReturnsAsync(new WeatherResponse());
             service = new WeatherService(mock.Object);
         }
 

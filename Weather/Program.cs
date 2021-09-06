@@ -11,7 +11,7 @@ namespace Weather
         static string url = ConfigurationManager.AppSettings["url"];
         static string appid = ConfigurationManager.AppSettings["appid"];
 
-        public static async void Main(string[] args)
+        public static void Main(string[] args)
         {
             var service = new WeatherService(new WeatherProvider(new HttpClient(), url, appid));
 
@@ -19,7 +19,7 @@ namespace Weather
 
             var city = Console.ReadLine();
 
-            var response = await service.GetCurrentWeatherAsync(city);
+            var response = service.GetCurrentWeatherAsync(city).Result;
             if(response.IsSuccess is true)
             {
                 Console.WriteLine($"The weather in {response.City} City right now is {response.Temperature}");
