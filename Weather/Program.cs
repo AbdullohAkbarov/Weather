@@ -19,7 +19,7 @@ namespace Weather
 
             var city = Console.ReadLine();
 
-            var response = service.GetCurrentWeatherAsync(city).Result;
+            var response = service.GetCurrentWeatherAsync(city).GetAwaiter().GetResult();
             if(response.IsSuccess is true)
             {
                 Console.WriteLine($"The weather in {response.City} City right now is {response.Temperature}");

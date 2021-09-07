@@ -12,8 +12,8 @@ namespace WeatherDAL
     public class WeatherProvider : IWeatherProvider
     {
         private readonly HttpClient client;
-        private string appid;
-        private string url;
+        private readonly string appid;
+        private readonly string url;
 
         public WeatherProvider(HttpClient client, string url, string appid)
         {
