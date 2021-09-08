@@ -2,6 +2,7 @@
 using WeatherBL;
 using System.Configuration;
 using System.Net.Http;
+using System.Threading.Tasks;
 using WeatherDAL;
 
 namespace Weather
@@ -11,7 +12,7 @@ namespace Weather
         static string url = ConfigurationManager.AppSettings["url"];
         static string appid = ConfigurationManager.AppSettings["appid"];
 
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var service = new WeatherService(new WeatherProvider(new HttpClient(), url, appid));
 
@@ -19,7 +20,7 @@ namespace Weather
 
             var city = Console.ReadLine();
 
-            var response = service.GetCurrentWeatherAsync(city).GetAwaiter().GetResult();
+            var response = await service.GetCurrentWeatherAsync(city);
             if(response.IsSuccess is true)
             {
                 Console.WriteLine($"The weather in {response.City} City right now is {response.Temperature}");
