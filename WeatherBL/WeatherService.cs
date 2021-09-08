@@ -25,7 +25,7 @@ namespace WeatherBL
             try
             {
                 var response = await provider.GetWeatherAsync(city);
-                if (response != null)
+                if (response != null && response.StatusCode is 200)
                 {
                     weather = new WeatherModel { City = city, Temperature = DegreeConverter.GetCelsius(response.Main.Temp), IsSuccess = true };
                 }

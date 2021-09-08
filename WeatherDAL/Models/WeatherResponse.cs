@@ -32,6 +32,6 @@ namespace WeatherDAL.Models
         [JsonProperty("name")]
         public string Name { get; set; }
         [JsonProperty("cod")]
-        public int Cod { get; set; }
+        public int StatusCode { get; set; }
     }
 }
