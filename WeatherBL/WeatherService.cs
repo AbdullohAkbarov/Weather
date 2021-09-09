@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using WeatherBL.Interfaces;
 using WeatherBL.Models;
-using WeatherBL.Validators;
 using WeatherDAL;
 
 namespace WeatherBL
@@ -10,13 +9,13 @@ namespace WeatherBL
     public class WeatherService : IWeatherService
     {
         private readonly IWeatherProvider provider;
-        private CityValidator cityValidator;
+        private readonly IValidator validator;
 
 
-        public WeatherService(IWeatherProvider provider)
+        public WeatherService(IWeatherProvider provider, IValidator validator)
         {
             this.provider = provider;
-            cityValidator = new CityValidator();
+            this.validator = validator;
         }
 
         public async Task<WeatherModel> GetCurrentWeatherAsync(string city)
@@ -25,7 +24,7 @@ namespace WeatherBL
             try
             {
                 var response = await provider.GetWeatherAsync(city);
-                if (response != null && response.StatusCode is 200 && cityValidator.Validate(city))
+                if (response != null && response.StatusCode is 200 && validator.Validate(city))
                 {
                     weather = new WeatherModel { City = city, Temperature = DegreeConverter.GetCelsius(response.Main.Temp), IsSuccess = true };
                 }
