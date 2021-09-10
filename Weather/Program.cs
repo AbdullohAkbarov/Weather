@@ -2,7 +2,9 @@
 using WeatherBL;
 using System.Configuration;
 using System.Net.Http;
+using System.Threading.Tasks;
 using WeatherDAL;
+using WeatherBL.Validators;
 
 namespace Weather
 {
@@ -11,15 +13,15 @@ namespace Weather
         static string url = ConfigurationManager.AppSettings["url"];
         static string appid = ConfigurationManager.AppSettings["appid"];
 
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            var service = new WeatherService(new WeatherProvider(new HttpClient(), url, appid));
+            var service = new WeatherService(new WeatherProvider(new HttpClient(), url, appid), new CityValidator());
 
             Console.Write("Write to city which you want to know the wheather = ");
 
             var city = Console.ReadLine();
 
-            var response = service.GetCurrentWeatherAsync(city).GetAwaiter().GetResult();
+            var response = await service.GetCurrentWeatherAsync(city);
             if(response.IsSuccess is true)
             {
                 Console.WriteLine($"The weather in {response.City} City right now is {response.Temperature}");

@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WeatherBL.Models;
 
-namespace WeatherBL
+namespace WeatherBL.Interfaces
 {
     public interface IWeatherService
     {

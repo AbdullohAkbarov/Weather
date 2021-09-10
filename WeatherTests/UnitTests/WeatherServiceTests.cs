@@ -1,5 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
+using System.Threading.Tasks;
 using WeatherBL;
 using WeatherBL.Models;
 using WeatherDAL;
@@ -7,10 +8,11 @@ using WeatherDAL.Models;
 
 namespace WeatherTests.UnitTests
 {
+    [TestFixture]
     public class WeatherServiceTests
     {
         [Test]
-        public async void GetCurrentWeatherAsync_CityEqualsCity_Boolean()
+        public async Task GetCurrentWeatherAsync_CityEqualsCity_Boolean()
         {
             //Arrange
             WeatherService service;
@@ -24,7 +26,7 @@ namespace WeatherTests.UnitTests
 
 
             //Assert
-            Assert.Equals(result.City, city);
+            Assert.AreEqual(result.City, city);
         }
     }
 }
