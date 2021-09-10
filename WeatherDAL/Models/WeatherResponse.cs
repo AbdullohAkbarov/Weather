@@ -7,6 +7,17 @@ namespace WeatherDAL.Models
 {
     public class WeatherResponse
     {
+        public WeatherResponse()
+        {
+
+        }
+
+        public WeatherResponse(double temp, int statusCode)
+        {
+            StatusCode = statusCode;
+            Main = new Main(temp);
+        }
+
         [JsonProperty("coord")]
         public Coord Coord { get; set; }
         [JsonProperty("weather")]

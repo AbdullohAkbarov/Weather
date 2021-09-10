@@ -7,6 +7,16 @@ namespace WeatherDAL.Models
 {
     public class Main
     {
+        public Main()
+        {
+
+        }
+
+        public Main(double temp)
+        {
+            Temp = temp;
+        }
+
         [JsonProperty("temp")]
         public double Temp { get; set; }
         [JsonProperty("feels_like")]
