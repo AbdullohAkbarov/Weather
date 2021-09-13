@@ -26,15 +26,15 @@ namespace WeatherTests.UnitTests
             city = "Tashkent";
             mockProvider = new Mock<IWeatherProvider>();
             mockValidator = new Mock<IValidator>();
+            mockProvider.Setup(m => m.GetWeatherAsync(city)).ReturnsAsync(new WeatherResponse() { StatusCode = 200, Main = new Main() { Temp = temp } });
+            mockValidator.Setup(m => m.Validate(city)).Returns(true);
+            service = new WeatherService(mockProvider.Object, mockValidator.Object);
         }
 
         [Test]
-        public async Task GetCurrentWeatherAsync_CityNameEqualsResponseCityName_ReturnsTrue()
+        public async Task GetCurrentWeatherAsync_CityNameEqualsResponseCityName_ReturnsAreEqual()
         {
             //Arrange
-            mockProvider.Setup(m => m.GetWeatherAsync(city)).ReturnsAsync(new WeatherResponse() { StatusCode = 200, Main = new Main() { Temp = temp }});
-            mockValidator.Setup(m => m.Validate(city)).Returns(true);
-            service = new WeatherService(mockProvider.Object, mockValidator.Object);
 
             //Act
             var result = await service.GetCurrentWeatherAsync(city);
@@ -44,12 +44,9 @@ namespace WeatherTests.UnitTests
         }
 
         [Test]
-        public async Task GetCurrentWeatherAsync_TempEqualsResponseTemp_ReturnsTrue()
+        public async Task GetCurrentWeatherAsync_TempEqualsResponseTemp_ReturnsAreEqual()
         {
             //Arrange
-            mockProvider.Setup(m => m.GetWeatherAsync(city)).ReturnsAsync(new WeatherResponse() { StatusCode = 200, Main = new Main() { Temp = temp }});
-            mockValidator.Setup(m => m.Validate(city)).Returns(true);
-            service = new WeatherService(mockProvider.Object, mockValidator.Object);
 
             //Act
             var result = await service.GetCurrentWeatherAsync(city);

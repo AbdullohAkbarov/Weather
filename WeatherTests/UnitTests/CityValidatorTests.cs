@@ -11,24 +11,23 @@ namespace WeatherTests.UnitTests
     [TestFixture]
     public class CityValidatorTests
     {
-        private CityValidator cityValidator;
+        private readonly CityValidator _cityValidator;
         private string city;
         private string nullCity;
 
         public CityValidatorTests()
         {
-            cityValidator = new CityValidator();
-            city = "London";
-            nullCity = null;
+            _cityValidator = new CityValidator();
         }
 
         [Test]
-        public void Validate_CityNameIsNotNull_ReturnsTrue()
+        public void Validate_CityNameIsNotNull_ReturnsIsNotNull()
         {
             //Arrange
+            city = "London";
 
             //Act
-            var result = cityValidator.Validate(city);
+            var result = _cityValidator.Validate(city);
 
             //Assert
             Assert.IsNotNull(result);
@@ -38,9 +37,10 @@ namespace WeatherTests.UnitTests
         public void Validate_CityNameIsNull_ReturnsFalse()
         {
             //Arrange
+            nullCity = null;
 
             //Act
-            var result = cityValidator.Validate(nullCity);
+            var result = _cityValidator.Validate(nullCity);
 
             //Assert
             Assert.IsFalse(result);
