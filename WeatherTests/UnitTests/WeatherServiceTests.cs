@@ -70,5 +70,19 @@ namespace WeatherTests.UnitTests
             //Assert
             Assert.That(result, Is.InstanceOf(typeof(WeatherModel)));
         }
+
+        [Test]
+        public async Task GetCurrentWeatherAsync_ValidatorIsEmpty_ReturnsParameterAreNullZeroFalse()
+        {
+            //Arrange
+
+            //Act
+            var result = await _testService.GetCurrentWeatherAsync(city);
+
+            //Assert
+            Assert.That(result.City, Is.Null);
+            Assert.That(result.Temperature, Is.Zero);
+            Assert.That(result.IsSuccess, Is.False);
+        }
     }
 }
