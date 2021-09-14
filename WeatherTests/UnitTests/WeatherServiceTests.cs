@@ -84,5 +84,18 @@ namespace WeatherTests.UnitTests
             Assert.That(result.Temperature, Is.Zero);
             Assert.That(result.IsSuccess, Is.False);
         }
+
+        [Test]
+        public async Task GetCurrentWeatherAsync_ValidatorIsFalse_ReturnsIsSuccessParameterIsFalse()
+        {
+            //Arrange
+            string emptyCity = "";
+
+            //Act
+            var result = await _service.GetCurrentWeatherAsync(emptyCity);
+
+            //Assert
+            Assert.That(result.IsSuccess, Is.False);
+        }
     }
 }
