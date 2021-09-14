@@ -23,12 +23,13 @@ namespace WeatherTests.UnitTests
         private Mock<IValidator> _mockValidate;
         private double temp;
         private string city;
-        private string emptyCity = "";
+        private string emptyCity;
 
 
         public WeatherServiceTests()
         {
             temp = 300.00;
+            emptyCity = "";
             city = "Tashkent";
             _mockProvider = new Mock<IWeatherProvider>();
             _mockValidator = new Mock<IValidator>();          
