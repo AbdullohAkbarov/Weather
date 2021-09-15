@@ -39,7 +39,7 @@ namespace WeatherTests.UnitTests
         }
         
         [Test]
-        public async Task GetCurrentWeatherAsync_CityNameEqualsResponseCityName_ReturnsAreEqual()
+        public async Task GetCurrentWeatherAsync_CityName_ReturnsSameCity()
         {
             //Arrange
 
@@ -51,7 +51,7 @@ namespace WeatherTests.UnitTests
         }
 
         [Test]
-        public async Task GetCurrentWeatherAsync_TempEqualsResponseTemp_ReturnsAreEqual()
+        public async Task GetCurrentWeatherAsync_Temp_ReturnsSameTemp()
         {
             //Arrange
 
@@ -72,13 +72,15 @@ namespace WeatherTests.UnitTests
 
             //Assert
             Assert.That(result.IsSuccess, Is.False);
+            Assert.AreEqual(result.Error, "Error occured the city can't be found.");
         }
 
         [Test]
-        public async Task GetCurrentWeatherAsync_ResultErrorAreEqualNullReferenceError_ReturnsAreEqual()
+        public async Task GetCurrentWeatherAsync_ErrorNullReferenceError_ReturnsSameError()
         {
             //Arrange
             _mockProvide = new Mock<IWeatherProvider>();
+            _mockValidate = new Mock<IValidator>();
             _mockProvide.Setup(m => m.GetWeatherAsync(emptyCity)).ThrowsAsync(new NullReferenceException());
             _testProvider = new WeatherService(_mockProvide.Object, _mockValidate.Object);
 
@@ -90,7 +92,7 @@ namespace WeatherTests.UnitTests
         }
 
         [Test]
-        public async Task GetCurrentWeatherAsync_ValidatorIsEmpty_ReturnsParameterAreNullZeroFalse()
+        public async Task GetCurrentWeatherAsync_ValidatorIsEmpty_ReturnsParametersAreNull()
         {
             //Arrange
             _mockValidate = new Mock<IValidator>();

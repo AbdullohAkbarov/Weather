@@ -21,7 +21,7 @@ namespace WeatherTests.UnitTests
         }
 
         [Test]
-        public void Validate_CityNameIsNotNull_ReturnsIsNotNull()
+        public void Validate_CityNameIsNotNull_ReturnsIsTrue()
         {
             //Arrange
             city = "London";
