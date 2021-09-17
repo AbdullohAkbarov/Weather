@@ -19,12 +19,13 @@ namespace WeatherAPI.Controllers
     public class WeatherController : Controller
     {
         private WeatherService _service;
-        private readonly IConfiguration configuration;
+        private readonly IConfiguration _configuration;
         private ILog log;
 
-        public WeatherController()
+        public WeatherController(IConfiguration configuration)
         {
-            _service = new WeatherService(new WeatherProvider(new HttpClient(), configuration["url"], configuration["appid"]), new CityValidator());
+            _configuration = configuration;
+            _service = new WeatherService(new WeatherProvider(new HttpClient(), _configuration.GetValue<string>("url"), _configuration.GetValue<string>("appid")), new CityValidator());
         }
 
         [Route("GetWeather")]
@@ -34,12 +35,12 @@ namespace WeatherAPI.Controllers
             var response = await _service.GetCurrentWeatherAsync(city);
             if (response.IsSuccess is false)
             {
-                log.Error(response.Error);
+                //log.Error(response.Error);
 
                 return response.Error;
             }
 
-            log.Info($"The weather in {response.City} City right now is {response.Temperature}");
+            //log.Info($"The weather in {response.City} City right now is {response.Temperature}");
 
             return response.Temperature.ToString();
         }
