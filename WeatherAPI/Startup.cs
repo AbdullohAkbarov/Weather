@@ -9,7 +9,12 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using WeatherBL;
+using WeatherBL.Interfaces;
+using WeatherBL.Validators;
+using WeatherDAL;
 
 namespace WeatherAPI
 {
@@ -27,6 +32,9 @@ namespace WeatherAPI
         {
 
             services.AddControllers();
+
+            services.AddScoped<IWeatherService>(m => new WeatherService(new WeatherProvider(new HttpClient(), Configuration.GetValue<string>("url"), Configuration.GetValue<string>("appid")), new CityValidator()));
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WeatherAPI", Version = "v1" });

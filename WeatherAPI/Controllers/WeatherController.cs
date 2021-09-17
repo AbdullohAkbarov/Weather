@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using WeatherBL;
+using WeatherBL.Interfaces;
 using WeatherBL.Models;
 using WeatherBL.Validators;
 using WeatherDAL;
@@ -18,21 +19,11 @@ namespace WeatherAPI.Controllers
     [Route("[controller]")]
     public class WeatherController : Controller
     {
-        private WeatherService _service;
-        private readonly IConfiguration _configuration;
-        private ILog log;
-
-        public WeatherController(IConfiguration configuration)
-        {
-            _configuration = configuration;
-            _service = new WeatherService(new WeatherProvider(new HttpClient(), _configuration.GetValue<string>("url"), _configuration.GetValue<string>("appid")), new CityValidator());
-        }
-
         [Route("GetWeather")]
         [HttpGet]
-        public async Task<string> GetWeather(string city)
+        public async Task<string> GetWeather(string city, [FromServices] IWeatherService service)
         {
-            var response = await _service.GetCurrentWeatherAsync(city);
+            var response = await service.GetCurrentWeatherAsync(city);
             if (response.IsSuccess is false)
             {
                 //log.Error(response.Error);
