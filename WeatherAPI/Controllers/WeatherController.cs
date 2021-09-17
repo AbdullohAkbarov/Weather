@@ -1,87 +1,47 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using log4net;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using WeatherBL;
+using WeatherBL.Models;
+using WeatherBL.Validators;
+using WeatherDAL;
 
 namespace WeatherAPI.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class WeatherController : Controller
     {
-        // GET: WeatherController
-        public ActionResult Index()
+        private WeatherService _service;
+        private readonly IConfiguration configuration;
+        private ILog log;
+
+        public WeatherController()
         {
-            return View();
+            _service = new WeatherService(new WeatherProvider(new HttpClient(), configuration["url"], configuration["appid"]), new CityValidator());
         }
 
-        // GET: WeatherController/Details/5
-        public ActionResult Details(int id)
+        [Route("GetWeather")]
+        [HttpGet]
+        public async Task<string> GetWeather(string city)
         {
-            return View();
-        }
-
-        // GET: WeatherController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: WeatherController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+            var response = await _service.GetCurrentWeatherAsync(city);
+            if (response.IsSuccess is false)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                log.Error(response.Error);
 
-        // GET: WeatherController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+                return response.Error;
+            }
 
-        // POST: WeatherController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            log.Info($"The weather in {response.City} City right now is {response.Temperature}");
 
-        // GET: WeatherController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: WeatherController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return response.Temperature.ToString();
         }
     }
 }

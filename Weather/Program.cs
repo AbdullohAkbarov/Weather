@@ -29,7 +29,7 @@ namespace Weather
             else
             {
                 Console.WriteLine(response.Error);
-            }            
+            }
 
             Console.ReadLine();
         }
