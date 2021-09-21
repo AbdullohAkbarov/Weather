@@ -33,12 +33,8 @@ namespace WeatherAPI.Controllers
             var response = await _service.GetCurrentWeatherAsync(city);
             if (response.IsSuccess is false)
             {
-                //log.Error(response.Error);
-
                 return response.Error;
             }
-
-            //log.Info($"The weather in {response.City} City right now is {response.Temperature}");
 
             return response.Temperature.ToString();
         }

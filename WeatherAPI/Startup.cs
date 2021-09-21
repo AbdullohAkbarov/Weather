@@ -35,7 +35,7 @@ namespace WeatherAPI
             services.AddControllers();
 
             services.AddScoped<HttpClient>();
-            services.AddScoped(opt => Configuration.GetSection("Config").Get<ConfigOptions>());
+            services.AddSingleton(opt => Configuration.GetSection("Config").Get<ConfigOptions>());
             services.AddScoped<IValidator, CityValidator>();
             services.AddScoped<IWeatherProvider, WeatherProvider>();
             services.AddScoped<IWeatherService, WeatherService>();
