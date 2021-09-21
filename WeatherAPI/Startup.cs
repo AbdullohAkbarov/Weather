@@ -15,6 +15,7 @@ using WeatherBL;
 using WeatherBL.Interfaces;
 using WeatherBL.Validators;
 using WeatherDAL;
+using WeatherDAL.Models;
 
 namespace WeatherAPI
 {
@@ -33,7 +34,10 @@ namespace WeatherAPI
 
             services.AddControllers();
 
-            services.AddScoped<IWeatherService>(m => new WeatherService(new WeatherProvider(new HttpClient(), Configuration.GetValue<string>("url"), Configuration.GetValue<string>("appid")), new CityValidator()));
+            services.AddScoped(opt => Configuration.GetSection("Config").Get<ConfigOptions>());
+            services.AddScoped<IValidator, CityValidator>();
+            services.AddScoped<IWeatherProvider, WeatherProvider>();
+            services.AddScoped<IWeatherService, WeatherService>();
 
             services.AddSwaggerGen(c =>
             {

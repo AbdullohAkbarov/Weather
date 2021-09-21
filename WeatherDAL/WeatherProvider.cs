@@ -15,11 +15,11 @@ namespace WeatherDAL
         private readonly string appid;
         private readonly string url;
 
-        public WeatherProvider(HttpClient client, string url, string appid)
+        public WeatherProvider(ConfigOptions config)
         {
-            this.appid = appid;
-            this.url = url;
-            this.client = client;
+            this.url = config.Url;
+            this.appid = config.AppId;            
+            client = new HttpClient();
         }
 
         public async Task<WeatherResponse> GetWeatherAsync(string city)

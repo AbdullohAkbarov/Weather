@@ -5,6 +5,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using WeatherDAL;
 using WeatherBL.Validators;
+using WeatherBL.Models;
+using WeatherDAL.Models;
 
 namespace Weather
 {
@@ -15,7 +17,7 @@ namespace Weather
 
         public static async Task Main(string[] args)
         {
-            var service = new WeatherService(new WeatherProvider(new HttpClient(), url, appid), new CityValidator());
+            var service = new WeatherService(new WeatherProvider(new ConfigOptions { Url = url, AppId = appid} ), new CityValidator());
 
             Console.Write("Write to city which you want to know the wheather = ");
 

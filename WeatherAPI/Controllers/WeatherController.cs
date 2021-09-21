@@ -19,6 +19,13 @@ namespace WeatherAPI.Controllers
     [Route("[controller]")]
     public class WeatherController : Controller
     {
+        //private IWeatherService _service;
+
+        //public WeatherController(IWeatherService service)
+        //{
+        //    _service = service;
+        //}
+
         [Route("GetWeather")]
         [HttpGet]
         public async Task<string> GetWeather(string city, [FromServices] IWeatherService service)
