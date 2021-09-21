@@ -11,25 +11,25 @@ namespace WeatherDAL
 {
     public class WeatherProvider : IWeatherProvider
     {
-        private readonly HttpClient client;
-        private readonly string appid;
-        private readonly string url;
+        private readonly HttpClient _client;
+        private readonly string _appid;
+        private readonly string _url;
 
-        public WeatherProvider(HttpClient client, string url, string appid)
+        public WeatherProvider(HttpClient client, ConfigOptions config)
         {
-            this.appid = appid;
-            this.url = url;
-            this.client = client;
+            _url = config.Url;
+            _appid = config.AppId;            
+            _client = client;
         }
 
         public async Task<WeatherResponse> GetWeatherAsync(string city)
         {
             var collection = new NameValueCollection();
             collection.Add("q", city);
-            collection.Add("appid", appid);
-            var weatherUrl = Utils.UrlStringBuilder(url, collection);
+            collection.Add("appid", _appid);
+            var weatherUrl = Utils.UrlStringBuilder(_url, collection);
 
-            var response = await client.GetAsync(weatherUrl);
+            var response = await _client.GetAsync(weatherUrl);
             var responseString = await response.Content.ReadAsStringAsync();
             var weatherResponse = JsonConvert.DeserializeObject<WeatherResponse>(responseString);
 
