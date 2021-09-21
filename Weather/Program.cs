@@ -17,7 +17,7 @@ namespace Weather
 
         public static async Task Main(string[] args)
         {
-            var service = new WeatherService(new WeatherProvider(new ConfigOptions { Url = url, AppId = appid} ), new CityValidator());
+            var service = new WeatherService(new WeatherProvider(new HttpClient(), new ConfigOptions { Url = url, AppId = appid} ), new CityValidator());
 
             Console.Write("Write to city which you want to know the wheather = ");
 
