@@ -10,7 +10,7 @@ namespace WeatherDAL.Models
         [JsonProperty("coord")]
         public Coord Coord { get; set; }
         [JsonProperty("weather")]
-        public List<Weather> Weather { get; set; }
+        public List<CurrentWeather> Weather { get; set; }
         [JsonProperty("@base")]
         public string Base { get; set; }
         [JsonProperty("main")]

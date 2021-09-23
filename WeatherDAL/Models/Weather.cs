@@ -5,7 +5,8 @@ using System.Text;
 
 namespace WeatherDAL.Models
 {
-    public class Weather
+    [JsonObject("Weather")]
+    public class CurrentWeather
     {
         [JsonProperty("id")]
         public int Id { get; set; }
