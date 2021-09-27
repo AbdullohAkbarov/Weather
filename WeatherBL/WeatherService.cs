@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using WeatherBL.Interfaces;
 using WeatherBL.Models;
 using WeatherDAL;
+using WeatherDAL.Entities;
 
 namespace WeatherBL
 {
@@ -39,6 +40,30 @@ namespace WeatherBL
             }            
 
             return weather;
+        }
+
+        public async Task<Weather> GetCurrentWeatherHistoryAsync(string city)
+        {
+            //Weather weather;
+            try
+            {
+                var response = await provider.GetWeatherHistoryAsync(city);
+                //if (response != null && response.StatusCode is 200 && validator.Validate(city))
+                if (response != null && validator.Validate(city))
+                {
+                    
+                }
+                else
+                {
+                    
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+
+            return new Weather();
         }
     }
 }

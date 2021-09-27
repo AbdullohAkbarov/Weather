@@ -12,6 +12,7 @@ using WeatherBL.Interfaces;
 using WeatherBL.Models;
 using WeatherBL.Validators;
 using WeatherDAL;
+using WeatherDAL.Entities;
 
 namespace WeatherAPI.Controllers
 {
@@ -37,6 +38,15 @@ namespace WeatherAPI.Controllers
             }
 
             return response.Temperature.ToString();
+        }
+
+        [Route("GetHistoryWeather")]
+        [HttpGet]
+        public async Task<Weather> GetHistoryWeather(string city)
+        {
+            var response = await _service.GetCurrentWeatherHistoryAsync(city);
+
+            return response;
         }
     }
 }
