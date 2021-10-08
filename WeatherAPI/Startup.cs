@@ -1,3 +1,4 @@
+using IdentityServer4.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using WeatherBL;
 using WeatherBL.Interfaces;
+using WeatherBL.Services;
 using WeatherBL.Validators;
 using WeatherDAL;
 using WeatherDAL.Models;
@@ -31,24 +33,44 @@ namespace WeatherAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
+
+            services.AddIdentityServer()
+                .AddInMemoryClients(ConfigurationIdentity.GetClients())
+                .AddInMemoryApiResources(ConfigurationIdentity.GetApiResources())
+                .AddInMemoryIdentityResources(ConfigurationIdentity.GetIdentityResources())
+                .AddInMemoryPersistedGrants()
+                .AddDeveloperSigningCredential();
 
             services.AddScoped<HttpClient>();
             services.AddSingleton(opt => Configuration.GetSection("Config").Get<ConfigOptions>());
+            services.AddSingleton(con => Configuration.GetSection("TimerConfig").Get<TimerConfig>());
             services.AddScoped<IValidator, CityValidator>();
             services.AddScoped<IWeatherProvider, WeatherProvider>();
+            services.AddSingleton<IWeatherTimerService, WeatherTimerService>();
             services.AddScoped<IWeatherService, WeatherService>();
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WeatherAPI", Version = "v1" });
             });
+
+            services.AddIdentityServer(options =>
+            {
+                //Adding custom endpoint in the discovery document          
+                options.Discovery.ExpandRelativePathsInCustomEntries = true;
+                options.Discovery.CustomEntries = new Dictionary<string, object>
+                {
+                    { "myCustomEndpoint", "connect/myCustomEndpoint"}
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseIdentityServer();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -60,6 +82,8 @@ namespace WeatherAPI
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(name: "default",
+                    pattern: "{controller=Weather}/{action=GetHistoryWeather/{city}}");
                 endpoints.MapControllers();
             });
         }
