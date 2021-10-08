@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WeatherDAL.Entities;
 using WeatherDAL.Models;
+using WeatherDAL.Repositories;
 
 namespace WeatherDAL
 {
@@ -15,12 +16,14 @@ namespace WeatherDAL
         private readonly HttpClient _client;
         private readonly string _appid;
         private readonly string _url;
+        private readonly WeatherRepository _repo;
 
         public WeatherProvider(HttpClient client, ConfigOptions config)
         {
             _url = config.Url;
             _appid = config.AppId;            
             _client = client;
+            _repo = new WeatherRepository();
         }
 
         public async Task<WeatherResponse> GetWeatherAsync(string city)
@@ -37,11 +40,14 @@ namespace WeatherDAL
             return weatherResponse;
         }
 
-        public async Task<Weather> GetWeatherHistoryAsync(string city)
+        public async Task InsertWeatherAsync(string city, double temp)
         {
-            var response = await _client.GetAsync(city);
+            await _repo.Insert(new Weather() { City = city, Temperature = temp, Date = DateTime.Now });
+        }
 
-            return new Weather();
+        public async Task<List<Weather>> GetWeatherHistoryAsync(string city)
+        {
+            return await _repo.GetByCityAll(city);
         }
     }
 }

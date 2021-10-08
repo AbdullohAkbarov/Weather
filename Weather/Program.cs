@@ -7,6 +7,7 @@ using WeatherDAL;
 using WeatherBL.Validators;
 using WeatherBL.Models;
 using WeatherDAL.Models;
+using WeatherBL.Services;
 
 namespace Weather
 {

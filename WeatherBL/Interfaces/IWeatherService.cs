@@ -10,6 +10,6 @@ namespace WeatherBL.Interfaces
     public interface IWeatherService
     {
         Task<WeatherModel> GetCurrentWeatherAsync(string city);
-        Task<Weather> GetCurrentWeatherHistoryAsync(string city);
+        Task<List<Weather>> GetCurrentWeatherHistoryAsync(string city);
     }
 }

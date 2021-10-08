@@ -1,4 +1,5 @@
 ﻿using log4net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -42,7 +43,7 @@ namespace WeatherAPI.Controllers
 
         [Route("GetHistoryWeather")]
         [HttpGet]
-        public async Task<Weather> GetHistoryWeather(string city)
+        public async Task<List<Weather>> GetHistoryWeather(string city)
         {
             var response = await _service.GetCurrentWeatherHistoryAsync(city);
 

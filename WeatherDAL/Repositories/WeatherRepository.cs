@@ -3,86 +3,48 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using WeatherDAL.EF;
 using WeatherDAL.Entities;
-using WeatherDAL.Interfaces;
 
 namespace WeatherDAL.Repositories
 {
-    public class WeatherRepository : IRepository<Weather>
+    public class WeatherRepository
     {
-        //public DbSet Entities => DbContext.Set();
-        //private WeatherContext db;
+        private WeatherContext _context;
 
-        //public WeatherRepository(WeatherContext context)
-        //{
-        //    this.db = context;
-        //}
-
-        //public IEnumerable<Weather> GetAll()
-        //{
-        //    return db.Weathers;
-        //}
-
-        //public Weather Get(int id)
-        //{
-        //    return db.Weathers.Find(id);
-        //}
-
-        //public void Create(Weather book)
-        //{
-        //    db.Weathers.Add(book);
-        //}
-
-        //public void Update(Weather book)
-        //{
-        //    db.Entry(book).State = EntityState.Modified;
-        //}
-
-        //public IEnumerable<Weather> Find(Func<Weather, Boolean> predicate)
-        //{
-        //    return db.Weathers.Where(predicate).ToList();
-        //}
-
-        //public void Delete(int id)
-        //{
-        //    Weather book = db.Weathers.Find(id);
-        //    if (book != null)
-        //        db.Weathers.Remove(book);
-        //}
-
-        public DbSet<Weather> Entities => throw new NotImplementedException();
-
-        public DbContext DbContext => throw new NotImplementedException();
-
-        public void Create(Weather item)
+        public WeatherRepository()
         {
-            throw new NotImplementedException();
+            _context = new WeatherContext();
         }
 
-        public void Delete(int id)
+        public async Task<List<Weather>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _context.Weathers.ToListAsync();
         }
 
-        public IEnumerable<Weather> Find(Func<Weather, bool> predicate)
+        public async Task<Weather> GetByCity(string city)
         {
-            throw new NotImplementedException();
+            return await _context.Weathers.FirstOrDefaultAsync(r => r.City.Equals(city));
         }
 
-        public Weather Get(int id)
+        public async Task<List<Weather>> GetByCityAll(string city)
         {
-            throw new NotImplementedException();
+            return await _context.Weathers.Where(r => r.City.Equals(city)).ToListAsync();
         }
 
-        public IEnumerable<Weather> GetAll()
+        public async Task<bool> Insert(Weather weather)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Weather item)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Weathers.Add(weather);
+                var result = await _context.SaveChangesAsync();
+                return result == 1;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.Text;
 using WeatherDAL.Entities;
@@ -8,16 +9,13 @@ namespace WeatherDAL.EF
 {
     public class WeatherContext : DbContext
     {
+        public WeatherContext() : base(ConfigurationManager.ConnectionStrings["WeatherDB"].ConnectionString) { }
+
         public DbSet<Weather> Weathers { get; set; }
 
-        static WeatherContext()
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //Database.SetInitializer<WeatherContext>(new StoreDBInitializer());
-        }
-
-        public WeatherContext(string connectionString): base(connectionString)
-        {
-
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

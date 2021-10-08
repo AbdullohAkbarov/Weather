@@ -11,6 +11,7 @@ namespace WeatherDAL
     public interface IWeatherProvider
     {     
         Task<WeatherResponse> GetWeatherAsync(string city);
-        Task<Weather> GetWeatherHistoryAsync(string city);
+        Task<List<Weather>> GetWeatherHistoryAsync(string city);
+        Task InsertWeatherAsync(string city, double temp);
     }
 }
